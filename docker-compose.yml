@@ -50,7 +50,7 @@ services:
   rider_service:
     build:
       context: ./rider-service
-      dockerfile: ./rider_service/Dockerfile
+      dockerfile: ./rider-service/Dockerfile
     container_name: rider_service_container
     environment:
       - KAFKA_BROKER=kafka_container:9092
