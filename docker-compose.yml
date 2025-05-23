@@ -1,0 +1,93 @@
+version: "3.8"
+
+services:
+  zookeeper_service:
+    image: confluentinc/cp-zookeeper:7.2.1
+    container_name: zookeeper_container
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+    ports:
+      - 2181:2181
+
+  kafka_service:
+    image: confluentinc/cp-kafka:7.2.1
+    container_name: kafka_container
+    ports:
+      - 9092:9092
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper_container:2181
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka_container:9092
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+    depends_on:
+      - zookeeper_service
+
+  redis_service:
+    image: redis:7.2
+    container_name: redis_container
+    ports:
+      - 6379:6379
+
+  mongo_service:
+    image: mongo:6.0
+    container_name: mongo_container
+    ports:
+      - 27017:27017
+    volumes:
+      - mongo-data:/data/db
+
+  kafka_ui_service:
+    image: provectuslabs/kafka-ui:latest
+    container_name: kafka_ui_container
+    ports:
+      - 8080:8080
+    environment:
+      KAFKA_CLUSTERS_0_NAME: local
+      KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: kafka_container:9092
+    depends_on:
+      - kafka_service
+
+  rider_service:
+    build:
+      context: ./rider-service
+    container_name: rider_service_container
+    environment:
+      - KAFKA_BROKER=kafka_container:9092
+    depends_on:
+      - kafka_service
+
+  analytics_service:
+    build:
+      context: ./analytics-service
+    container_name: analytics_container
+    environment:
+      - KAFKA_BROKER=kafka_container:9092
+      - REDIS_HOST=redis_container
+      - REDIS_PORT=6379
+    depends_on:
+      - kafka_service
+      - redis_service
+
+  storage_service:
+    build:
+      context: ./storage-service
+    container_name: storage_container
+    environment:
+      - KAFKA_BROKER=kafka_container:9092
+      - MONGO_URI=mongodb://mongo_container:27017/foodapp
+    depends_on:
+      - kafka_service
+      - mongo_service
+
+  websocket_sim_service:
+    build:
+      context: ./websocket-sim
+    container_name: websocket_sim_container
+    environment:
+      - REDIS_HOST=redis_container
+      - REDIS_PORT=6379
+    depends_on:
+      - redis_service
+
+volumes:
+  mongo-data:

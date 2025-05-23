@@ -1,0 +1,12 @@
+# Node modules for all services
+**/node_modules/
+
+# dotenv environment variables
+**/.env
+
+# Docker build artifacts (if any)
+**/dist/
+**/build/
+
+# MongoDB volume (if mounted outside container)
+mongo-data/
