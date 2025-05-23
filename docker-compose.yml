@@ -50,6 +50,7 @@ services:
   rider_service:
     build:
       context: ./rider-service
+      dockerfile: ./rider_service/Dockerfile
     container_name: rider_service_container
     environment:
       - KAFKA_BROKER=kafka_container:9092
@@ -59,6 +60,7 @@ services:
   analytics_service:
     build:
       context: ./analytics-service
+      dockerfile: ./analytics-service/Dockerfile
     container_name: analytics_container
     environment:
       - KAFKA_BROKER=kafka_container:9092
@@ -71,6 +73,7 @@ services:
   storage_service:
     build:
       context: ./storage-service
+      dockerfile: ./storage-service/Dockerfile
     container_name: storage_container
     environment:
       - KAFKA_BROKER=kafka_container:9092
@@ -82,6 +85,7 @@ services:
   websocket_service:
     build:
       context: ./websocket-service
+      dockerfile: ./websocket-service/Dockerfile
     container_name: websocket_service_container
     environment:
       - REDIS_HOST=redis_container
