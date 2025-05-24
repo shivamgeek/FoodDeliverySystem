@@ -53,16 +53,16 @@ services:
     depends_on:
       - kafka_service
 
-  # analytics_service:
-  #   build: ./analytics-service
-  #   container_name: analytics_container
-  #   environment:
-  #     - KAFKA_BROKER=kafka_container:9092
-  #     - REDIS_HOST=redis_container
-  #     - REDIS_PORT=6379
-  #   depends_on:
-  #     - kafka_service
-  #     - redis_service
+  analytics_service:
+    build: ./analytics-service
+    container_name: analytics_container
+    environment:
+      - KAFKA_BROKER=kafka_container:9092
+      - REDIS_HOST=redis_container
+      - REDIS_PORT=6379
+    depends_on:
+      - kafka_service
+      - redis_service
 
   # storage_service:
   #   build: ./storage-service
