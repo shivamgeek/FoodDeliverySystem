@@ -74,14 +74,14 @@ services:
       - kafka_service
       - mongo_service
 
-  websocket_service:
-    build: ./websocket-service
-    container_name: websocket_service_container
-    environment:
-      - REDIS_HOST=redis_container
-      - REDIS_PORT=6379
-    depends_on:
-      - redis_service
+  # websocket_service:
+  #   build: ./websocket-service
+  #   container_name: websocket_service_container
+  #   environment:
+  #     - REDIS_HOST=redis_container
+  #     - REDIS_PORT=6379
+  #   depends_on:
+  #     - redis_service
 
 volumes:
   mongo-data:
