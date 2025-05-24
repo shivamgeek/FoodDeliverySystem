@@ -53,35 +53,35 @@ services:
     depends_on:
       - kafka_service
 
-  analytics_service:
-    build: ./analytics-service
-    container_name: analytics_container
-    environment:
-      - KAFKA_BROKER=kafka_container:9092
-      - REDIS_HOST=redis_container
-      - REDIS_PORT=6379
-    depends_on:
-      - kafka_service
-      - redis_service
+  # analytics_service:
+  #   build: ./analytics-service
+  #   container_name: analytics_container
+  #   environment:
+  #     - KAFKA_BROKER=kafka_container:9092
+  #     - REDIS_HOST=redis_container
+  #     - REDIS_PORT=6379
+  #   depends_on:
+  #     - kafka_service
+  #     - redis_service
 
-  storage_service:
-    build: ./storage-service
-    container_name: storage_container
-    environment:
-      - KAFKA_BROKER=kafka_container:9092
-      - MONGO_URI=mongodb://mongo_container:27017/foodapp
-    depends_on:
-      - kafka_service
-      - mongo_service
+  # storage_service:
+  #   build: ./storage-service
+  #   container_name: storage_container
+  #   environment:
+  #     - KAFKA_BROKER=kafka_container:9092
+  #     - MONGO_URI=mongodb://mongo_container:27017/foodapp
+  #   depends_on:
+  #     - kafka_service
+  #     - mongo_service
 
-  websocket_service:
-    build: ./websocket-service
-    container_name: websocket_service_container
-    environment:
-      - REDIS_HOST=redis_container
-      - REDIS_PORT=6379
-    depends_on:
-      - redis_service
+  # websocket_service:
+  #   build: ./websocket-service
+  #   container_name: websocket_service_container
+  #   environment:
+  #     - REDIS_HOST=redis_container
+  #     - REDIS_PORT=6379
+  #   depends_on:
+  #     - redis_service
 
 volumes:
   mongo-data:
